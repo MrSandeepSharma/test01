@@ -32,17 +32,22 @@ const fetchMovies = async () => {
 try {
     const response = await fetch("https://api.themoviedb.org/3/trending/movie/day?language=en-US", options)
     const movies = await response.json()
-    const a = movies.results.map(movie => (
-        `
-        <div style="border: 1px solid black; padding:1rem; width:200px;">
-            <p>${movie.title}</p>
-            <img style="width:100%;" src="https://media.themoviedb.org/t/p/w220_and_h330_face/${movie.poster_path}" />
-            <button data-type="btn" data-key=${movie.id}>See Trailer</button>
-            <button onclick="hideTrailer()">Hide Trailer</button>
-        </div>
-        `
+    if(movies) {
+        const a = movies.results.map(movie => (
+            `
+            <div style="border: 1px solid black; padding:1rem; width:200px;">
+                <p>${movie.title}</p>
+                <img style="width:100%;" src="https://media.themoviedb.org/t/p/w220_and_h330_face/${movie.poster_path}" />
+                <button data-type="btn" data-key=${movie.id}>See Trailer</button>
+                <button onclick="hideTrailer()">Hide Trailer</button>
+            </div>
+            `
         )).join("")
         document.getElementById("root").innerHTML = a
+    } else{
+        const html = `<h1>TMDB API Don't Work</h1>`
+        document.getElementById("root").innerHTML = html
+    }
 } catch (error) {
     const html = `<h1>TMDB API Don't Work</h1>`
     document.getElementById("root").innerHTML = html
